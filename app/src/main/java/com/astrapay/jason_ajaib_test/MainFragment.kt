@@ -8,7 +8,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.astrapay.jason_ajaib_test.helper.DefaultConstants
 
-class MainFragment(layoutId: Int) : Fragment(layoutId) {
+open class MainFragment(layoutId: Int) : Fragment(layoutId) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initComponent()
