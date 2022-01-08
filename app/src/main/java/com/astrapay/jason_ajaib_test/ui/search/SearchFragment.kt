@@ -1,6 +1,7 @@
 package com.astrapay.jason_ajaib_test.ui.search
 
 import android.content.Context
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -9,23 +10,28 @@ import com.astrapay.jason_ajaib_test.MainFragment
 import com.astrapay.jason_ajaib_test.R
 import com.astrapay.jason_ajaib_test.component.CompRecyclerView
 import com.astrapay.jason_ajaib_test.databinding.SearchFragmentBinding
+import com.astrapay.jason_ajaib_test.helper.data.DataConvert
 import com.astrapay.jason_ajaib_test.helper.data.EventObserver
 import com.astrapay.jason_ajaib_test.ui.search.component.SearchAdapter
+import com.astrapay.jason_ajaib_test.ui.search.viewdata.SearchViewData
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : MainFragment(R.layout.search_fragment),
-CompRecyclerView.LoadMoreListener{
+CompRecyclerView.LoadMoreListener,
+SearchAdapter.OnItemClickListener{
 
     @Inject
     lateinit var adapter: SearchAdapter
+
+    @Inject
+    lateinit var dataConvert: DataConvert
 
     private lateinit var binding: SearchFragmentBinding
     private val viewModel: SearchViewModel by viewModels()
 
     private var lastQuery = ""
-
     private var isNewQuery = true
 
     override fun initComponent() {
@@ -42,6 +48,7 @@ CompRecyclerView.LoadMoreListener{
         super.initEventListener()
 
         binding.rvSearch.listener = this
+        adapter.setOnItemClickListener(this)
 
         binding.compSearchBox.onSearchPerformed { query ->
             hideKeyboard()
@@ -65,14 +72,21 @@ CompRecyclerView.LoadMoreListener{
 
     }
 
+    override fun onMoreRequest() {
+        isNewQuery = false
+        viewModel.requestSearch(lastQuery, isNewQuery)
+    }
+
+    override fun onItemClick(view: View, item: SearchViewData) {
+        val userJsonData = dataConvert.toJson(item) ?: ""
+        navigate(
+            SearchFragmentDirections.actionSearchFragmentToDetailFragment(userJsonData)
+        )
+    }
+
     private fun hideKeyboard() {
         val imm: InputMethodManager =
             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view?.windowToken, 0)
-    }
-
-    override fun onMoreRequest() {
-        isNewQuery = false
-        viewModel.requestSearch(lastQuery, isNewQuery)
     }
 }

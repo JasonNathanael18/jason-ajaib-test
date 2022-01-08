@@ -10,6 +10,7 @@ import com.astrapay.jason_ajaib_test.databinding.SearchCompInfoitemBinding
 import com.astrapay.jason_ajaib_test.ui.search.viewdata.SearchViewData
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
@@ -44,6 +45,7 @@ class SearchAdapter @Inject constructor(@ActivityContext private val context: Co
             .load(data.thumbnail)
             .apply(glideOpt)
             .thumbnail(0.1f)
+            .transform(CircleCrop())
             .into(holder.binding.ivThumbnail)
 
         holder.binding.labelUserId.text = "@${data.userId}"
@@ -52,9 +54,9 @@ class SearchAdapter @Inject constructor(@ActivityContext private val context: Co
         holder.binding.labelLocation.text = data.location
         holder.binding.labelEmail.text = data.email
 
-//        holder.binding.ivProdukAstra.setOnClickListener {
-//            onItemClickListener?.onItemClick(it, datas[position])
-//        }
+        holder.binding.itemUser.setOnClickListener {
+            onItemClickListener?.onItemClick(it, datas[position])
+        }
     }
 
     override fun getItemCount(): Int {
