@@ -8,8 +8,11 @@ import com.astrapay.jason_ajaib_test.MainViewModel
 import com.astrapay.jason_ajaib_test.helper.DefaultConstants
 import com.astrapay.jason_ajaib_test.helper.data.EventData
 import com.astrapay.jason_ajaib_test.service.ConnectionService
+import com.astrapay.jason_ajaib_test.ui.search.viewdata.SearchResultTempViewData
 import com.astrapay.jason_ajaib_test.ui.search.viewdata.SearchViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,12 +26,10 @@ class SearchViewModel @Inject constructor(
     }
 
     private var lastQuery = ""
+    private var resultList = mutableListOf<SearchViewData>()
 
     private val _liveSearch: MutableLiveData<EventData<List<SearchViewData>>> by lazy { MutableLiveData<EventData<List<SearchViewData>>>() }
     val liveSearch: LiveData<EventData<List<SearchViewData>>> get() = _liveSearch
-
-    private val _liveSearchMore: MutableLiveData<EventData<List<SearchViewData>>> by lazy { MutableLiveData<EventData<List<SearchViewData>>>() }
-    val liveSearchMore: LiveData<EventData<List<SearchViewData>>> get() = _liveSearchMore
 
     private var nextPageToLoad: Int = savedStateHandle.get(SavedStateKey.NextPageToLoad.name) ?: 1
         set(value) {
@@ -37,7 +38,9 @@ class SearchViewModel @Inject constructor(
         }
 
     fun requestSearch(query: String, newQuery: Boolean) {
-        if (newQuery) {resetNextPageToLoadToOne()}
+        if (newQuery) {
+            resetNextPageToLoadToOne()
+        }
 
         lastQuery = query
         viewModelScope.launch(exceptionHandler) {
@@ -49,56 +52,35 @@ class SearchViewModel @Inject constructor(
 
             // map the response data
             val listViewData = response.body()!!.items?.map {
-                SearchViewData.from(it!!)
+                SearchResultTempViewData.from(it!!)
             }
 
-            if (listViewData!!.isNotEmpty()) {
-                incrementNextPageToLoadByOne()
-            }
-
-            _liveSearch.value = EventData(content = listViewData)
+            requestDetailUser(listViewData!!)
         }
     }
 
-    fun requestMoreSearch() {
+    private fun requestDetailUser(userListData: List<SearchResultTempViewData>) {
+        resultList.clear()
         viewModelScope.launch(exceptionHandler) {
-            val response = connectionService.searchUser(
-                lastQuery,
-                nextPageToLoad,
-                DefaultConstants.InfiniteScrollList.loadLimitPerRequest_10
-            )
+            userListData.map { data ->
+                async {
+                    val response = connectionService.userDetail(
+                        data.userId!!
+                    )
 
-            // map the response data
-            val listViewData = response.body()!!.items?.map {
-                SearchViewData.from(it!!)
-            }
+                    // map the response data
+                    resultList.add(SearchViewData.from( response.body()!!))
 
-            if (listViewData!!.isNotEmpty()) {
+                }
+            }.awaitAll()
+
+            if (resultList.isNotEmpty()) {
                 incrementNextPageToLoadByOne()
             }
 
-            _liveSearch.value = EventData(content = listViewData)
+            _liveSearch.value = EventData(content = resultList)
         }
     }
-
-//    fun requestDetailUser(userId: String) {
-//        viewModelScope.launch(exceptionHandler) {
-//            val response = connectionService.userDetail(
-//                userId
-//            )
-//
-//            // map the response data
-//            val listViewData = response.body()!!.data.map {
-//                HomePromotionInfo.from(it)
-//            }
-//
-//            if (listViewData.isNotEmpty()) {
-//                incrementNextPageToLoadByOne()
-//            }
-//
-//            _livePromotion.value = EventData(content = listViewData)
-//        }
-//    }
 
     private fun incrementNextPageToLoadByOne() {
         nextPageToLoad += 1

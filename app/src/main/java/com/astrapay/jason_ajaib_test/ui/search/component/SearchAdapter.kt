@@ -45,8 +45,12 @@ class SearchAdapter @Inject constructor(@ActivityContext private val context: Co
             .apply(glideOpt)
             .thumbnail(0.1f)
             .into(holder.binding.ivThumbnail)
-        //Picasso.get().load(data.thumbnail).into(holder.binding.ivThumbnail)
-        holder.binding.labelUserId.text = data.userId
+
+        holder.binding.labelUserId.text = "@${data.userId}"
+        holder.binding.labelUserName.text = data.name
+        holder.binding.labelBio.text = data.bio
+        holder.binding.labelLocation.text = data.location
+        holder.binding.labelEmail.text = data.email
 
 //        holder.binding.ivProdukAstra.setOnClickListener {
 //            onItemClickListener?.onItemClick(it, datas[position])

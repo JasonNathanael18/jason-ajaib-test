@@ -1,15 +1,23 @@
 package com.astrapay.jason_ajaib_test.ui.search.viewdata
 
-import com.astrapay.jason_ajaib_test.client.dto.search.ItemsResult
+import com.astrapay.jason_ajaib_test.client.dto.user.UserDetailResponse
 
 data class SearchViewData(
     val userId: String?,
-    val thumbnail: String?
+    val thumbnail: String?,
+    val name: String?,
+    val bio: String?,
+    val location: String?,
+    val email: String?
 ){
     companion object {
-        fun from(source: ItemsResult) = SearchViewData(
+        fun from(source: UserDetailResponse) = SearchViewData(
             userId = source.login ?: "",
-            thumbnail = source.avatarUrl ?: ""
+            thumbnail = source.avatarUrl ?: "",
+            name = source.name ?: "",
+            bio = source.bio ?: "",
+            location = source.location ?: "",
+            email = source.email ?: ""
         )
     }
 }

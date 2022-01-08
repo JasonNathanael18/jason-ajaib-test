@@ -56,10 +56,8 @@ CompRecyclerView.LoadMoreListener{
 
         viewModel.liveSearch.observe(viewLifecycleOwner,EventObserver{ data->
             data.content?.let {
-                if (isNewQuery){
-                    adapter.clearData()
-                }
-                adapter.addData(it)
+                if (isNewQuery) adapter.reloadData(it)
+                else adapter.addData(it)
                 binding.rvSearch.hideWait()
                 binding.rvSearch.showData()
             }
