@@ -1,6 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp">
+
+    <ImageView
+        android:id="@+id/ivThumbnail"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/labelUserName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/ivThumbnail"
+        app:layout_constraintTop_toTopOf="@id/ivThumbnail"
+        tools:text="jasonnathanael" />
+
+    <TextView
+        android:id="@+id/labelUserId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/labelUserName"
+        app:layout_constraintTop_toBottomOf="@+id/labelUserName"
+        tools:text="jasonnathanael18" />
+
+    <TextView
+        android:id="@+id/labelBio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/labelUserName"
+        app:layout_constraintTop_toBottomOf="@id/labelUserId"
+        tools:text="jasonnathanael bio" />
+
+    <!--   Start Layout Follower-->
+
+    <ImageView
+        android:id="@+id/ivFollower"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/follower"
+        app:layout_constraintStart_toStartOf="@id/labelUserName"
+        app:layout_constraintTop_toBottomOf="@+id/labelBio" />
+
+    <TextView
+        android:id="@+id/labelFollower"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/ivFollower"
+        app:layout_constraintStart_toEndOf="@id/ivFollower"
+        app:layout_constraintTop_toTopOf="@+id/ivFollower"
+        tools:text="12k" />
+
+    <TextView
+        android:id="@+id/labelFollowerText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Followers"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/ivFollower"
+        app:layout_constraintStart_toEndOf="@id/labelFollower"
+        app:layout_constraintTop_toTopOf="@+id/ivFollower" />
+
+    <TextView
+        android:id="@+id/lblDot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="•"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/ivFollower"
+        app:layout_constraintStart_toEndOf="@id/labelFollowerText"
+        app:layout_constraintTop_toTopOf="@+id/ivFollower" />
+
+    <TextView
+        android:id="@+id/labelFollowing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/ivFollower"
+        app:layout_constraintStart_toEndOf="@id/lblDot"
+        app:layout_constraintTop_toTopOf="@+id/ivFollower"
+        tools:text="120" />
+
+    <TextView
+        android:id="@+id/labelFollowingText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Following"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/ivFollower"
+        app:layout_constraintStart_toEndOf="@id/labelFollowing"
+        app:layout_constraintTop_toTopOf="@+id/ivFollower" />
+
+    <!--   End Layout Follower-->
+
+    <ImageView
+        android:id="@+id/ivLocation"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/location"
+        app:layout_constraintStart_toStartOf="@id/labelUserName"
+        app:layout_constraintTop_toBottomOf="@+id/ivFollower" />
+
+    <TextView
+        android:id="@+id/labelLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivLocation"
+        app:layout_constraintStart_toEndOf="@id/ivLocation"
+        app:layout_constraintTop_toTopOf="@+id/ivLocation"
+        tools:text="location" />
+
+    <ImageView
+        android:id="@+id/ivEmail"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/email"
+        app:layout_constraintStart_toStartOf="@id/labelUserName"
+        app:layout_constraintTop_toBottomOf="@+id/ivLocation" />
+
+    <TextView
+        android:id="@+id/labelEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivEmail"
+        app:layout_constraintStart_toEndOf="@id/ivEmail"
+        app:layout_constraintTop_toTopOf="@+id/ivEmail"
+        tools:text="email" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
