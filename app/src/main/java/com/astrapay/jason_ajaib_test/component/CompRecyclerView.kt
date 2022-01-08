@@ -77,6 +77,11 @@ class CompRecyclerView (context: Context, attrs: AttributeSet) : FrameLayout(con
         binding.emptyView.visibility = GONE
     }
 
+    fun initialHideList() {
+        binding.recyclerView.visibility = GONE
+        binding.emptyView.visibility = GONE
+    }
+
     fun setLayoutManager(layout: RecyclerView.LayoutManager) {
         binding.recyclerView.layoutManager = layout
     }

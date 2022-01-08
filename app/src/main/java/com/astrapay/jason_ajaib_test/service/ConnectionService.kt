@@ -18,12 +18,13 @@ class ConnectionService @Inject constructor(
 
     suspend fun searchUser(
         query: String,
-        page: Int
+        page: Int,
+        perPage: Int
     ): Response<SearchResponse> {
         return withContext(getDispatcher()) {
             return@withContext apiClient.searchUser(
                 query = query,
-                perPage = 10,
+                perPage = perPage,
                 page = page
             )
         }

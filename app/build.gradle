@@ -70,6 +70,12 @@ dependencies {
     ext.viewmodel_savedstate = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$viewmodel_savedstate"
 
+    // cache image load
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+    //implementation 'com.squareup.picasso:picasso:2.71828'
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

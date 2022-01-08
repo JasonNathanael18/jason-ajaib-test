@@ -4,26 +4,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_gravity="center_horizontal"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="12dp"
+        app:contentPadding="8dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:overScrollMode="never" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/waitMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="12dp"
+                app:contentPadding="8dp">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/loading" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/emptyView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:overScrollMode="never" />
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="32dp">
+
+            <TextView
+                android:id="@+id/labelErrorMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="NO DATA Found"
+                android:textSize="16sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/waitMore"
+            android:id="@+id/wait"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginTop="32dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="16dp"
             app:cardElevation="12dp"
@@ -32,44 +78,9 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/loading"/>
+                android:src="@drawable/loading" />
 
         </com.google.android.material.card.MaterialCardView>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/emptyView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingTop="32dp">
-        <TextView
-            android:id="@+id/labelErrorMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:text="NO DATA Found"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/wait"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="12dp"
-        app:contentPadding="8dp">
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/loading"/>
 
     </com.google.android.material.card.MaterialCardView>
 </FrameLayout>

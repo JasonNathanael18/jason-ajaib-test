@@ -3,34 +3,78 @@ package com.astrapay.jason_ajaib_test.ui.search
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.astrapay.jason_ajaib_test.MainFragment
 import com.astrapay.jason_ajaib_test.R
+import com.astrapay.jason_ajaib_test.component.CompRecyclerView
 import com.astrapay.jason_ajaib_test.databinding.SearchFragmentBinding
+import com.astrapay.jason_ajaib_test.helper.data.EventObserver
+import com.astrapay.jason_ajaib_test.ui.search.component.SearchAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment : MainFragment(R.layout.search_fragment){
+class SearchFragment : MainFragment(R.layout.search_fragment),
+CompRecyclerView.LoadMoreListener{
+
+    @Inject
+    lateinit var adapter: SearchAdapter
 
     private lateinit var binding: SearchFragmentBinding
+    private val viewModel: SearchViewModel by viewModels()
+
+    private var lastQuery = ""
+
+    private var isNewQuery = true
 
     override fun initComponent() {
         super.initComponent()
         binding = SearchFragmentBinding.bind(requireView())
+
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rvSearch.setLayoutManager(layoutManager)
+        binding.rvSearch.setAdapter(adapter)
+        binding.rvSearch.initialHideList()
     }
 
     override fun initEventListener() {
         super.initEventListener()
 
-        binding.compSearchBox.onSearchPerformed {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        binding.rvSearch.listener = this
 
-            val imm: InputMethodManager =
-                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        binding.compSearchBox.onSearchPerformed { query ->
+            hideKeyboard()
+            lastQuery = query
+            isNewQuery = true
+            viewModel.requestSearch(query, isNewQuery)
         }
     }
 
     override fun initObserver() {
         super.initObserver()
+
+        viewModel.liveSearch.observe(viewLifecycleOwner,EventObserver{ data->
+            data.content?.let {
+                if (isNewQuery){
+                    adapter.clearData()
+                }
+                adapter.addData(it)
+                binding.rvSearch.hideWait()
+                binding.rvSearch.showData()
+            }
+        })
+
+    }
+
+    private fun hideKeyboard() {
+        val imm: InputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
+    override fun onMoreRequest() {
+        isNewQuery = false
+        viewModel.requestSearch(lastQuery, isNewQuery)
     }
 }
