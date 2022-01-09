@@ -2,7 +2,6 @@ package com.astrapay.jason_ajaib_test
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.astrapay.jason_ajaib_test.helper.Logger
 import com.astrapay.jason_ajaib_test.helper.data.EventData
 import com.astrapay.jason_ajaib_test.helper.exception.UnAuthorizedException
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -13,7 +12,6 @@ open class MainViewModel : ViewModel() {
     val liveInvalidToken: MutableLiveData<EventData<String>> by lazy { MutableLiveData<EventData<String>>() }
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, ex ->
-        Logger.e("Error: ${ex.message}")
         if ( ex is UnAuthorizedException) {
             liveInvalidToken.value = EventData()
         }

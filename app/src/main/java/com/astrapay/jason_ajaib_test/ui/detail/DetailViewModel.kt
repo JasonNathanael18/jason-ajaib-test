@@ -26,7 +26,7 @@ class DetailViewModel @Inject constructor(
     val liveReposList: LiveData<EventData<List<RepositoriesViewData>>> get() = _liveReposList
 
     private var nextPageToLoad: Int =
-        savedStateHandle.get(DetailViewModel.SavedStateKey.NextPageToLoad.name) ?: 1
+        savedStateHandle.get(SavedStateKey.NextPageToLoad.name) ?: 1
 
     fun requestReposList(userName: String) {
         viewModelScope.launch(exceptionHandler) {
