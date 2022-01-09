@@ -31,6 +31,9 @@ class SearchViewModel @Inject constructor(
     private val _liveSearch: MutableLiveData<EventData<List<SearchViewData>>> by lazy { MutableLiveData<EventData<List<SearchViewData>>>() }
     val liveSearch: LiveData<EventData<List<SearchViewData>>> get() = _liveSearch
 
+    private val _liveErrorEmptyList: MutableLiveData<EventData<Boolean>> by lazy { MutableLiveData<EventData<Boolean>>() }
+    val liveErrorEmptyList: MutableLiveData<EventData<Boolean>> get() = _liveErrorEmptyList
+
     private var nextPageToLoad: Int = savedStateHandle.get(SavedStateKey.NextPageToLoad.name) ?: 1
         set(value) {
             savedStateHandle.set(SavedStateKey.NextPageToLoad.name, value)
@@ -50,12 +53,15 @@ class SearchViewModel @Inject constructor(
                 DefaultConstants.InfiniteScrollList.loadLimitPerRequest_10
             )
 
-            // map the response data
-            val listViewData = response.body()!!.items?.map {
-                SearchResultTempViewData.from(it!!)
+            if (nextPageToLoad == 1 && response.body()?.items!!.isEmpty()) {
+                _liveErrorEmptyList.value = EventData(content = true)
+            } else {
+                // map the response data
+                val listViewData = response.body()!!.items?.map {
+                    SearchResultTempViewData.from(it!!)
+                }
+                requestDetailUser(listViewData!!)
             }
-
-            requestDetailUser(listViewData!!)
         }
     }
 
@@ -69,7 +75,7 @@ class SearchViewModel @Inject constructor(
                     )
 
                     // map the response data
-                    resultList.add(SearchViewData.from( response.body()!!))
+                    resultList.add(SearchViewData.from(response.body()!!))
 
                 }
             }.awaitAll()

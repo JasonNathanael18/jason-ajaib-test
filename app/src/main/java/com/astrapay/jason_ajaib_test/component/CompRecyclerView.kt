@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.astrapay.jason_ajaib_test.databinding.CompRecyclerViewBinding
@@ -28,6 +29,7 @@ class CompRecyclerView (context: Context, attrs: AttributeSet) : FrameLayout(con
         binding.waitMore.visibility = GONE
         binding.emptyView.visibility = GONE
         binding.recyclerView.setHasFixedSize(true)
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
 
         binding.recyclerView.clipToPadding = false
         binding.recyclerView.setPadding(0, 0, 0, 32)

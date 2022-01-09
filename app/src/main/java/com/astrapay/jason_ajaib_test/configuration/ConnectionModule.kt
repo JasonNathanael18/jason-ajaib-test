@@ -2,9 +2,7 @@ package com.astrapay.jason_ajaib_test.configuration
 
 import com.astrapay.jason_ajaib_test.helper.DefaultConstants
 import com.astrapay.jason_ajaib_test.helper.Logger
-import com.astrapay.jason_ajaib_test.helper.exception.BadRequestException
-import com.astrapay.jason_ajaib_test.helper.exception.ServerFailedException
-import com.astrapay.jason_ajaib_test.helper.exception.UnAuthorizedException
+import com.astrapay.jason_ajaib_test.helper.exception.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,8 +41,10 @@ object ConnectionModule {
         request = requestBuilder.build()
         val response = it.proceed(request)
         when (response.code()) {
+            304,422 -> throw DataErrorException("Data Error")
             400 -> throw BadRequestException("Bad Request")
             401, 403 -> throw UnAuthorizedException("Unauthorized user.")
+            404 -> throw NotFoundException("Not Found.")
             in 500..550 -> throw ServerFailedException("Server error.")
         }
         response

@@ -1,5 +1,6 @@
 package com.astrapay.jason_ajaib_test.ui.detail
 
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,10 +62,16 @@ class DetailFragment : MainFragment(R.layout.detail_fragment),
                 binding.rvRepo.showData()
             }
         })
+
+        viewModel.liveError.observe(viewLifecycleOwner, EventObserver { data ->
+            binding.rvRepo.hideWait()
+            Toast.makeText(context, data.message, Toast.LENGTH_SHORT).show()
+        })
     }
 
     override fun loadData() {
         super.loadData()
+        binding.rvRepo.showWait()
         viewModel.requestReposList(userData.userId)
     }
 

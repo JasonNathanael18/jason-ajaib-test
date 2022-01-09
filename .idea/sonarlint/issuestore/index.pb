@@ -7,5 +7,3 @@ x
 Happ/src/main/java/com/astrapay/jason_ajaib_test/helper/data/EventData.kt,2/7/27d2ccaea56d2e8bdba49f21b0d2febef1b789c5
 z
 Japp/src/main/java/com/astrapay/jason_ajaib_test/helper/DefaultConstants.kt,a/a/aabc79a362a692facb10782142e7a0f9b6d01a41
-p
-@app/src/main/java/com/astrapay/jason_ajaib_test/MainViewModel.kt,f/f/ff589661a5da320d3aa87d5711aedd3852b57004
