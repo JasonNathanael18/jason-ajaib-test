@@ -16,4 +16,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 }

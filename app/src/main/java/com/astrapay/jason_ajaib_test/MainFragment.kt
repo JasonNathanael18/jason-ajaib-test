@@ -14,6 +14,7 @@ open class MainFragment(layoutId: Int) : Fragment(layoutId) {
         initComponent()
         initEventListener()
         initObserver()
+        loadData()
     }
 
     protected fun navigate(id: NavDirections) {
@@ -31,4 +32,9 @@ open class MainFragment(layoutId: Int) : Fragment(layoutId) {
     protected open fun initObserver(){
         Log.d(DefaultConstants.logTag, "init observer")
     }
+
+    protected open fun loadData(){
+        Log.d(DefaultConstants.logTag, "init loaddata")
+    }
+
 }

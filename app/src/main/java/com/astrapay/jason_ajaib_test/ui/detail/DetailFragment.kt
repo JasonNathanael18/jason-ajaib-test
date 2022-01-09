@@ -1,11 +1,16 @@
 package com.astrapay.jason_ajaib_test.ui.detail
 
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.astrapay.jason_ajaib_test.MainFragment
 import com.astrapay.jason_ajaib_test.R
+import com.astrapay.jason_ajaib_test.component.CompRecyclerView
 import com.astrapay.jason_ajaib_test.databinding.DetailFragmentBinding
 import com.astrapay.jason_ajaib_test.helper.NumberFormatter.getFormatedNumber
 import com.astrapay.jason_ajaib_test.helper.data.DataConvert
+import com.astrapay.jason_ajaib_test.helper.data.EventObserver
+import com.astrapay.jason_ajaib_test.ui.detail.component.RepositoriesAdapter
 import com.astrapay.jason_ajaib_test.ui.search.viewdata.SearchViewData
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -15,12 +20,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DetailFragment : MainFragment(R.layout.detail_fragment) {
+class DetailFragment : MainFragment(R.layout.detail_fragment),
+    CompRecyclerView.LoadMoreListener{
+
+    @Inject
+    lateinit var adapter: RepositoriesAdapter
 
     @Inject
     lateinit var dataConvert: DataConvert
 
     private lateinit var binding: DetailFragmentBinding
+    private val viewModel: DetailViewModel by viewModels()
+
     private val args: DetailFragmentArgs by navArgs()
     private lateinit var userData: SearchViewData
 
@@ -29,6 +40,36 @@ class DetailFragment : MainFragment(R.layout.detail_fragment) {
         binding = DetailFragmentBinding.bind(requireView())
         userData = dataConvert.toData(args.userData)!!
         initialViewData()
+
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rvRepo.setLayoutManager(layoutManager)
+        binding.rvRepo.setAdapter(adapter)
+    }
+
+    override fun initEventListener() {
+        super.initEventListener()
+        binding.rvRepo.listener = this
+    }
+
+    override fun initObserver() {
+        super.initObserver()
+
+        viewModel.liveReposList.observe(viewLifecycleOwner, EventObserver { data ->
+            data.content?.let {
+                adapter.addData(it)
+                binding.rvRepo.hideWait()
+                binding.rvRepo.showData()
+            }
+        })
+    }
+
+    override fun loadData() {
+        super.loadData()
+        viewModel.requestReposList(userData.userId)
+    }
+
+    override fun onMoreRequest() {
+        viewModel.requestReposList(userData.userId)
     }
 
     private fun initialViewData() {

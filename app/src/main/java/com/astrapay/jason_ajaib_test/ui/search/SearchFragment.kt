@@ -3,7 +3,6 @@ package com.astrapay.jason_ajaib_test.ui.search
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.astrapay.jason_ajaib_test.MainFragment
@@ -19,8 +18,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : MainFragment(R.layout.search_fragment),
-CompRecyclerView.LoadMoreListener,
-SearchAdapter.OnItemClickListener{
+    CompRecyclerView.LoadMoreListener,
+    SearchAdapter.OnItemClickListener {
 
     @Inject
     lateinit var adapter: SearchAdapter
@@ -38,7 +37,8 @@ SearchAdapter.OnItemClickListener{
         super.initComponent()
         binding = SearchFragmentBinding.bind(requireView())
 
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvSearch.setLayoutManager(layoutManager)
         binding.rvSearch.setAdapter(adapter)
         binding.rvSearch.initialHideList()
@@ -61,7 +61,7 @@ SearchAdapter.OnItemClickListener{
     override fun initObserver() {
         super.initObserver()
 
-        viewModel.liveSearch.observe(viewLifecycleOwner,EventObserver{ data->
+        viewModel.liveSearch.observe(viewLifecycleOwner, EventObserver { data ->
             data.content?.let {
                 if (isNewQuery) adapter.reloadData(it)
                 else adapter.addData(it)
