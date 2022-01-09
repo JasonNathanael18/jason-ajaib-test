@@ -1,6 +1,7 @@
 package com.astrapay.jason_ajaib_test.ui.detail.viewdata
 
 import com.astrapay.jason_ajaib_test.client.dto.repos.ReposResponseItem
+import com.astrapay.jason_ajaib_test.helper.DateFormatter
 
 data class RepositoriesViewData(
     val thumbnail: String,
@@ -15,7 +16,7 @@ data class RepositoriesViewData(
             reposName = source.name ?: "",
             reposDetail = source.description ?: "",
             stars = source.stargazersCount ?: 0,
-            updatedAt = source.updatedAt ?: ""
+            updatedAt = DateFormatter.getDateDifference(source.updatedAt ?: "")
         )
     }
 }

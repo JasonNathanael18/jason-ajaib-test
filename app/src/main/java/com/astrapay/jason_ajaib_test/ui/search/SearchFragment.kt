@@ -9,6 +9,7 @@ import com.astrapay.jason_ajaib_test.MainFragment
 import com.astrapay.jason_ajaib_test.R
 import com.astrapay.jason_ajaib_test.component.CompRecyclerView
 import com.astrapay.jason_ajaib_test.databinding.SearchFragmentBinding
+import com.astrapay.jason_ajaib_test.helper.DateFormatter
 import com.astrapay.jason_ajaib_test.helper.data.DataConvert
 import com.astrapay.jason_ajaib_test.helper.data.EventObserver
 import com.astrapay.jason_ajaib_test.ui.search.component.SearchAdapter
