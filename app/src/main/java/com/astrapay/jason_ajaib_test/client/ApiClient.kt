@@ -1,5 +1,6 @@
 package com.astrapay.jason_ajaib_test.client
 
+import com.astrapay.jason_ajaib_test.client.dto.repos.ReposResponseItem
 import com.astrapay.jason_ajaib_test.client.dto.search.SearchResponse
 import com.astrapay.jason_ajaib_test.client.dto.user.UserDetailResponse
 import retrofit2.Response
@@ -22,4 +23,12 @@ interface ApiClient {
     suspend fun userDetail(
         @Path("loginUserName") userName: String
     ): Response<UserDetailResponse>
+
+    //User Detail
+    @GET("/users/{loginUserName}/repos")
+    suspend fun reposList(
+        @Path("loginUserName") userName: String,
+        @Query("per_page") perPage: Int,
+        @Query("page") page: Int
+    ): Response<List<ReposResponseItem>>
 }
