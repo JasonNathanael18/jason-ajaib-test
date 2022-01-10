@@ -81,6 +81,11 @@ class SearchFragment : MainFragment(R.layout.search_fragment),
             binding.rvSearch.hideWait()
             Toast.makeText(context, data.message, Toast.LENGTH_SHORT).show()
         })
+
+        viewModel.liveUnauthorized.observe(viewLifecycleOwner, EventObserver { data ->
+            binding.rvSearch.hideWait()
+            Toast.makeText(context, data.message, Toast.LENGTH_SHORT).show()
+        })
     }
 
     override fun onMoreRequest() {

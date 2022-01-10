@@ -1,7 +1,9 @@
 package com.astrapay.jason_ajaib_test.ui.detail
 
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.astrapay.jason_ajaib_test.MainFragment
@@ -50,6 +52,14 @@ class DetailFragment : MainFragment(R.layout.detail_fragment),
     override fun initEventListener() {
         super.initEventListener()
         binding.rvRepo.listener = this
+
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
     }
 
     override fun initObserver() {
@@ -69,6 +79,11 @@ class DetailFragment : MainFragment(R.layout.detail_fragment),
         })
 
         viewModel.liveError.observe(viewLifecycleOwner, EventObserver { data ->
+            binding.rvRepo.hideWait()
+            Toast.makeText(context, data.message, Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.liveUnauthorized.observe(viewLifecycleOwner, EventObserver { data ->
             binding.rvRepo.hideWait()
             Toast.makeText(context, data.message, Toast.LENGTH_SHORT).show()
         })

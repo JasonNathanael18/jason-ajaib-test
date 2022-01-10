@@ -9,11 +9,13 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 open class MainViewModel : ViewModel() {
 
     val liveError: MutableLiveData<EventData<String>> by lazy { MutableLiveData<EventData<String>>() }
-    val liveInvalidToken: MutableLiveData<EventData<String>> by lazy { MutableLiveData<EventData<String>>() }
+    val liveUnauthorized: MutableLiveData<EventData<String>> by lazy { MutableLiveData<EventData<String>>() }
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, ex ->
         if ( ex is UnAuthorizedException) {
-            liveInvalidToken.value = EventData()
+            liveUnauthorized.value = EventData(
+                message = "Unauthorized"
+            )
         }
         else if ( ex.message?.isNotEmpty() == true ) {
             liveError.value = EventData(
