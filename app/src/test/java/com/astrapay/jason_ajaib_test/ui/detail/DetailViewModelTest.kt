@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.astrapay.TestCoroutineRule
 import com.astrapay.getOrWaitValue
 import com.astrapay.jason_ajaib_test.client.dto.repos.ReposResponseItem
+import com.astrapay.jason_ajaib_test.client.dto.search.SearchResponse
 import com.astrapay.jason_ajaib_test.helper.exception.ServerFailedException
 import com.astrapay.jason_ajaib_test.service.ConnectionService
 import com.google.common.truth.Truth
@@ -64,12 +65,36 @@ class DetailViewModelTest {
     }
 
     @Test
+    fun `requestRepos WHEN repos is not found THEN liveErrorEmptyList has value`() =
+        runBlockingTest {
+            val responseList: List<ReposResponseItem> = listOf()
+            Mockito.doReturn(
+                Response.success(
+                    responseList
+                )
+            )
+                .`when`(connectionService)
+                .getRepos(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt())
+
+            val viewModel = initViewModel()
+            viewModel.requestReposList(
+                "tester"
+            )
+
+            val liveData = viewModel.liveErrorEmptyList.getOrWaitValue()
+            Truth.assertThat(liveData.content).isNotNull()
+            Truth.assertThat(liveData.content!!).isTrue()
+        }
+
+
+    @Test
     fun `requestRepos WHEN response is failure THEN liveError has value`() = runBlockingTest {
 
         val errorMessage = "something went wrong"
         Mockito.doAnswer {
             throw ServerFailedException(errorMessage)
-        }.`when`(connectionService).getRepos(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt())
+        }.`when`(connectionService)
+            .getRepos(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt())
 
         val viewModel = initViewModel()
         viewModel.requestReposList("test")

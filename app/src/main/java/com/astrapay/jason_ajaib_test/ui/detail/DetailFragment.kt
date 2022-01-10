@@ -63,6 +63,11 @@ class DetailFragment : MainFragment(R.layout.detail_fragment),
             }
         })
 
+        viewModel.liveErrorEmptyList.observe(viewLifecycleOwner, EventObserver { data ->
+            binding.rvRepo.hideWait()
+            binding.rvRepo.showEmpty("")
+        })
+
         viewModel.liveError.observe(viewLifecycleOwner, EventObserver { data ->
             binding.rvRepo.hideWait()
             Toast.makeText(context, data.message, Toast.LENGTH_SHORT).show()

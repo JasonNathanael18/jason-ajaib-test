@@ -25,6 +25,10 @@ class DetailViewModel @Inject constructor(
     private val _liveReposList: MutableLiveData<EventData<List<RepositoriesViewData>>> by lazy { MutableLiveData<EventData<List<RepositoriesViewData>>>() }
     val liveReposList: LiveData<EventData<List<RepositoriesViewData>>> get() = _liveReposList
 
+    private val _liveErrorEmptyList: MutableLiveData<EventData<Boolean>> by lazy { MutableLiveData<EventData<Boolean>>() }
+    val liveErrorEmptyList: MutableLiveData<EventData<Boolean>> get() = _liveErrorEmptyList
+
+
     private var nextPageToLoad: Int =
         savedStateHandle.get(SavedStateKey.NextPageToLoad.name) ?: 1
 
@@ -37,15 +41,19 @@ class DetailViewModel @Inject constructor(
                 DefaultConstants.InfiniteScrollList.loadLimitPerRequest_10
             )
 
-            // map the response data
-            val listViewData = response.body()!!.map {
-                RepositoriesViewData.from(it)
-            }
+            if (nextPageToLoad == 1 && response.body()!!.isEmpty()) {
+                _liveErrorEmptyList.value = EventData(content = true)
+            } else {
+                // map the response data
+                val listViewData = response.body()!!.map {
+                    RepositoriesViewData.from(it)
+                }
 
-            if (listViewData.isNotEmpty()) {
-                incrementNextPageToLoadByOne()
+                if (listViewData.isNotEmpty()) {
+                    incrementNextPageToLoadByOne()
+                }
+                _liveReposList.value = EventData(content = listViewData)
             }
-            _liveReposList.value = EventData(content = listViewData)
         }
     }
 
