@@ -1,6 +1,5 @@
 package com.astrapay.jason_ajaib_test.configuration
 
-import com.astrapay.jason_ajaib_test.helper.DefaultConstants
 import com.astrapay.jason_ajaib_test.helper.Logger
 import com.astrapay.jason_ajaib_test.helper.exception.*
 import dagger.Module
@@ -32,11 +31,11 @@ object ConnectionModule {
 
         val accept = "application/vnd.github.v3+json"
         Logger.d("[accept] $accept")
-        val authorizationToken = DefaultConstants.OAuth
-        Logger.d("[authorization-token] Bearer $authorizationToken")
+//        val authorizationToken = DefaultConstants.OAuth
+//        Logger.d("[authorization-token] Bearer $authorizationToken")
 
         requestBuilder.addHeader("Accept", accept)
-        requestBuilder.addHeader("Authorization", "Bearer $authorizationToken")
+        //requestBuilder.addHeader("Authorization", "Bearer $authorizationToken")
 
         request = requestBuilder.build()
         val response = it.proceed(request)
